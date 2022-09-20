@@ -13,12 +13,14 @@ size_t binary_tree_leaves(const binary_tree_t *tree)
 
 	if (tree == NULL)
 		return (0);
-	/* recursively iterate throught the left node until a leaf is found */
+	/* check if the left and right child of a node are null, this indicates a leaf */
 	if (tree->left == NULL && tree->right == NULL)
 	{
 		return (1);
 	}
+	/* recursively check the left subtree for leaf nodes */
 	left_size = left_size + binary_tree_leaves(tree->left);
+	/* recursively check the right subtree for leaf nodes */
 	right_size = right_size + binary_tree_leaves(tree->right);
 	return (left_size + right_size);
 }
