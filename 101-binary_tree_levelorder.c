@@ -35,11 +35,27 @@ void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int))
 
 	if (tree == NULL || func == NULL)
 		return;
+	/* printing the value of node */
 	func(tree->n);
+	/* getting sibling of node */
 	sibling = binary_tree_sibling((binary_tree_t *) tree);
+	/* checking if sibling is not null and printing its value */
 	if (sibling != NULL)
 		func(sibling->n);
+	/* recursively calling the left tree */
 	binary_tree_levelorder(tree->left, func);
+	/* to handle cases where their is no left child */
+	if (tree->left == NULL)
+		binary_tree_levelorder(tree->right, func);
+	/**
+	 * cheking if their is a sibling and recurcively calling
+	 * its left subtree
+	 */
 	if (sibling != NULL)
+	{
 		binary_tree_levelorder(sibling->left, func);
+		/* to handle cases where their is no left child */
+		if (sibling->left == NULL)
+			binary_tree_levelorder(sibling->right, func);
+	}
 }
