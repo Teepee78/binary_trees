@@ -1,7 +1,7 @@
 #include "binary_trees.h"
 
 /**
- * binary_tree_postorder - Goes through a binary tree using post-order traversal
+ * binary_tree_postorder - traverses a binary tree using post-order traversal
  * @tree: Pointer to binary tree
  * @func: function to be carried out on each node
  */

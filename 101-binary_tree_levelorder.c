@@ -29,7 +29,8 @@ size_t get_height(const binary_tree_t *tree)
  * @level: level which function should be called
  * @func: function to be called
  */
-void funcCurrentLevel(const binary_tree_t *tree, size_t level, void (*func)(int))
+void funcCurrentLevel(const binary_tree_t *tree, size_t level,
+											void (*func)(int))
 {
 	if (tree == NULL)
 		return;
