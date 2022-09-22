@@ -62,7 +62,6 @@ int min(const binary_tree_t *tree)
  * is_bst - checks if a binary tree is a bst tree
  *
  * @tree: pointer to binary tree
- * @caller: caller of function
  * Return: 1 if bst else 0
  */
 int is_bst(const binary_tree_t *tree)
