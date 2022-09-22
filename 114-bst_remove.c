@@ -70,7 +70,7 @@ void deleteWithChild(bst_t *delete, bst_t *parent)
 	else
 	{ /* delete has two nodes */
 		temp = minValueNode(delete->right);
-		delete->n = temp->n;
+		// delete->n = temp->n;
 		if (temp->right != NULL)/* delete temp, check if temp is has a right child */
 		{
 			temp->parent->left = temp->right;
@@ -78,6 +78,13 @@ void deleteWithChild(bst_t *delete, bst_t *parent)
 		} /* temp has no child */
 		else
 			temp->parent->left = NULL;
+		temp->parent = delete->parent;
+		temp->left = delete->left;
+		if (delete->left)
+			delete->left->parent = temp;
+		temp->right = delete->right;
+		if (delete->right)
+			delete->right->parent = temp;
 		delete = temp;
 	}
 	free(delete);
