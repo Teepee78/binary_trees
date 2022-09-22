@@ -39,7 +39,7 @@ bst_t *get_nodeToDelete(bst_t *root, int value)
  * @parent: parent of node to delete
  * Return:
  */
-void deleteWithChild(bst_t *delete, bst_t *parent)
+void deleteWithChild(bst_t **root, bst_t *delete, bst_t *parent)
 {
 	bst_t *temp;
 
@@ -52,8 +52,13 @@ void deleteWithChild(bst_t *delete, bst_t *parent)
 				parent->left = temp;
 			else
 				parent->right = temp;
+			temp->parent = parent;
 		}
-		temp->parent = parent;
+		else
+		{
+			temp->parent = parent;
+			*root = temp;
+		}
 	}
 	else if (delete->right == NULL && delete->left)
 	{
@@ -64,8 +69,13 @@ void deleteWithChild(bst_t *delete, bst_t *parent)
 				parent->left = temp;
 			else
 				parent->right = temp;
+			temp->parent = parent;
 		}
-		temp->parent = parent;
+		else
+		{
+			temp->parent = parent;
+			*root = temp;
+		}
 	}
 	else
 	{ /* delete has two nodes */
@@ -77,9 +87,15 @@ void deleteWithChild(bst_t *delete, bst_t *parent)
 			temp->right->parent = temp->parent;
 		} /* temp has no child */
 		else
-			temp->parent->left = NULL;
+		{
+			if (temp->parent->left == temp)
+				temp->parent->left = NULL;
+			else
+				temp->parent->right = NULL;
+		}
 		delete = temp;
 	}
+
 	free(delete);
 }
 /**
@@ -100,6 +116,8 @@ bst_t *bst_remove(bst_t *root, int value)
 	parent = delete->parent;
 	if (delete->left == NULL && delete->right == NULL) /* delete has no child */
 	{ /* checking left or right child */
+		if (parent == NULL)
+			root = NULL;
 		if (parent)
 		{
 			if (parent->left && parent->left == delete)
@@ -110,6 +128,6 @@ bst_t *bst_remove(bst_t *root, int value)
 		free(delete);
 	}
 	else
-		deleteWithChild(delete, parent);
+		deleteWithChild(&root, delete, parent);
 	return (root);
 }
