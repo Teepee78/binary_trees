@@ -48,7 +48,7 @@ bst_t *bst_remove(bst_t *root, int value)
 					parent->right = temp;
 			}
 			temp->parent = parent;
-			temp->left = root->left;
+			/*temp->left = root->left;*/
 		} else if (root->right == NULL && root->left)
 		{
 			temp = root->left;
