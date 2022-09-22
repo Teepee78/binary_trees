@@ -13,6 +13,75 @@ bst_t *minValueNode(bst_t *root)
 	{}
 	return (temp);
 }
+
+/**
+ * get_nodeToDelete - determines node to delete
+ *
+ * @root: pointer to binary tree
+ * @value: value to be deleted
+ * Return: node to be deleted
+ */
+bst_t *get_nodeToDelete(bst_t *root, int value)
+{
+	if (root == NULL)
+		return (NULL);
+	if (root->n == value)
+		return (root);
+	else if (value > root->n)
+		return (get_nodeToDelete(root->right, value));
+	else
+		return (get_nodeToDelete(root->left, value));
+}
+/**
+ * deleteWithChild - deletes nodes that have children
+ *
+ * @delete: node to delete
+ * @parent: parent of node to delete
+ * Return:
+ */
+void deleteWithChild(bst_t *delete, bst_t *parent)
+{
+	bst_t *temp;
+
+	if (delete->left == NULL && delete->right) /* delete has only one child */
+	{
+		temp = delete->right;
+		if (parent) /* check if delete is left or right child */
+		{
+			if (parent->left && parent->left == delete)
+				parent->left = temp;
+			else
+				parent->right = temp;
+		}
+		temp->parent = parent;
+	}
+	else if (delete->right == NULL && delete->left)
+	{
+		temp = delete->left;
+		if (parent) /* check if delete is left or right child */
+		{
+			if (parent->left && parent->left == delete)
+				parent->left = temp;
+			else
+				parent->right = temp;
+		}
+		temp->parent = parent;
+	}
+	else
+	{ /* delete has two nodes */
+		temp = minValueNode(delete->right);
+		delete->n = temp->n;
+		if (temp->right != NULL)/* delete temp, check if temp is has a right child */
+		{
+			temp->parent->left = temp->right;
+			temp->right->parent = temp->parent;
+		} /* temp has no child */
+		else
+			temp->parent->left = NULL;
+		delete = temp;
+	}
+	free(delete);
+}
 /**
  * bst_remove - removes a node from a binary tree
  * @root: root of binary tree
@@ -21,68 +90,26 @@ bst_t *minValueNode(bst_t *root)
  */
 bst_t *bst_remove(bst_t *root, int value)
 {
-	bst_t *temp, *parent, *retval = NULL;
+	bst_t *parent, *delete;
 
 	if (root == NULL)
 		return (NULL);
-	parent = root->parent;
-	/* node to be deleted is at the left */
-	if (root->n > value)
-		retval = bst_remove(root->left, value);
-	/* node to be deleted is at the right */
-	else if (root->n < value)
-		retval = bst_remove(root->right, value);
-	/* node to be deleted is equal to root */
-	else
-	{
-		/* root has only one child */
-		if (root->left == NULL && root->right)
+	delete = get_nodeToDelete(root, value);
+	if (delete == NULL)
+		return (root);
+	parent = delete->parent;
+	if (delete->left == NULL && delete->right == NULL) /* delete has no child */
+	{ /* checking left or right child */
+		if (parent)
 		{
-			temp = root->right;
-			/* check if root is left or right child */
-			if (parent)
-			{
-				if (parent->left && parent->left == root)
-					parent->left = temp;
-				else
-					parent->right = temp;
-			}
-			temp->parent = parent;
-			/*temp->left = root->left;*/
-		} else if (root->right == NULL && root->left)
-		{
-			temp = root->left;
-			/* check if root is left or right child */
-			if (parent)
-			{
-				if (parent->left && parent->left == root)
-					parent->left = temp;
-				else
-					parent->right = temp;
-			}
-			temp->parent = parent;
-		} else  /* root has two nodes */
-		{
-			temp = minValueNode(root->right);
-			/* check if root is left or right child */
-			if (parent)
-			{
-				if (parent->left && parent->left == root)
-					parent->left = temp;
-				else
-					parent->right = temp;
-			}
-			temp->parent->left = NULL;
-			temp->right = temp->parent;
-			temp->parent = parent;
-			temp->left = root->left;
-			root->left->parent = temp;
+			if (parent->left && parent->left == delete)
+				parent->left = NULL;
+			else
+				parent->right = NULL;
 		}
-		free(root);
-		/* find root */
-		while (temp->parent != NULL)
-			temp = temp->parent;
-		return (temp);
+		free(delete);
 	}
-	return (retval);
+	else
+		deleteWithChild(delete, parent);
+	return (root);
 }
