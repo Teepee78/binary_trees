@@ -85,7 +85,7 @@ void deleteWithChild(bst_t *delete, bst_t *parent)
 		temp->right = delete->right;
 		if (delete->right)
 			delete->right->parent = temp;
-		delete = temp;
+		// delete = temp;
 	}
 	free(delete);
 }
