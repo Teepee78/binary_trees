@@ -77,12 +77,7 @@ void deleteWithChild(bst_t *delete, bst_t *parent)
 			temp->right->parent = temp->parent;
 		} /* temp has no child */
 		else
-		{
-			if (temp->parent->left == temp)
-				temp->parent->left = NULL;
-			else
-				temp->parent->right = NULL;
-		}
+			temp->parent->left = NULL;
 		delete = temp;
 	}
 
