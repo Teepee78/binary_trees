@@ -64,13 +64,8 @@ void deleteWithChild(bst_t *delete, bst_t *parent)
 				parent->left = temp;
 			else
 				parent->right = temp;
-			temp->parent = parent;
 		}
-		else
-		{
-			temp->parent = parent;
-			*root = temp;
-		}
+		temp->parent = parent;
 	}
 	else
 	{ /* delete has two nodes */
