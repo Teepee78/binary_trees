@@ -39,7 +39,7 @@ bst_t *get_nodeToDelete(bst_t *root, int value)
  * @parent: parent of node to delete
  * Return:
  */
-void deleteWithChild(bst_t **root, bst_t *delete, bst_t *parent)
+void deleteWithChild(bst_t *delete, bst_t *parent)
 {
 	bst_t *temp;
 
@@ -52,13 +52,8 @@ void deleteWithChild(bst_t **root, bst_t *delete, bst_t *parent)
 				parent->left = temp;
 			else
 				parent->right = temp;
-			temp->parent = parent;
 		}
-		else
-		{
-			temp->parent = parent;
-			*root = temp;
-		}
+		temp->parent = parent;
 	}
 	else if (delete->right == NULL && delete->left)
 	{
