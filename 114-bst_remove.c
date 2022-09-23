@@ -80,7 +80,6 @@ void deleteWithChild(bst_t *delete, bst_t *parent)
 			temp->parent->left = NULL;
 		delete = temp;
 	}
-
 	free(delete);
 }
 /**
