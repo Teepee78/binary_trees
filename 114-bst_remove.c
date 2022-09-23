@@ -106,8 +106,6 @@ bst_t *bst_remove(bst_t *root, int value)
 	parent = delete->parent;
 	if (delete->left == NULL && delete->right == NULL) /* delete has no child */
 	{ /* checking left or right child */
-		if (parent == NULL)
-			root = NULL;
 		if (parent)
 		{
 			if (parent->left && parent->left == delete)
@@ -118,6 +116,6 @@ bst_t *bst_remove(bst_t *root, int value)
 		free(delete);
 	}
 	else
-		deleteWithChild(&root, delete, parent);
+		deleteWithChild(delete, parent);
 	return (root);
 }
